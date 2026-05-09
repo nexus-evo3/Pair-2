@@ -1,9 +1,6 @@
 app = "pair-2"
 primary_region = "cdg"
 
-[build]
-  builder = "heroku/buildpacks:20"
-
 [env]
   PORT = "3000"
 
