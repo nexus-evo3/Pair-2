@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spectral Hunter Pair Site</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --cyan: #00D4FF;
+      --dark: #050810;
+      --dark2: #0A0F1E;
+      --dark3: #0F1729;
+      --border: rgba(0,212,255,0.2);
+      --glow: 0 0 20px rgba(0,212,255,0.3);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--dark);
+      color: #E0F4FF;
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+    }
+    body::before {
+      content:''; position:fixed; inset:0;
+      background-image:
+        linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events:none; z-index:0;
+    }
+    body::after {
+      content:''; position:fixed; top:-2px; left:0;
+      width:100%; height:2px;
+      background:linear-gradient(90deg, transparent, var(--cyan), transparent);
+      animation:scan 6s linear infinite; opacity:0.3; z-index:1; pointer-events:none;
+    }
+    @keyframes scan { 0%{top:-2px} 100%{top:100vh} }
+
+    header {
+      position:relative; z-index:10;
+      padding:20px 40px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom:1px solid var(--border);
+      background:rgba(5,8,16,0.8); backdrop-filter:blur(10px);
+    }
+    .logo-area { display:flex; align-items:center; gap:14px; }
+    .logo-icon {
+      width:44px; height:44px;
+      background:linear-gradient(135deg,var(--cyan),#0055FF);
+      border-radius:10px; display:flex; align-items:center; justify-content:center;
+      font-size:22px; box-shadow:var(--glow);
+    }
+    .logo-text { font-family:'Orbitron',sans-serif; font-size:14px; font-weight:700; color:var(--cyan); letter-spacing:2px; text-shadow:0 0 10px rgba(0,212,255,0.5); }
+    .logo-sub { font-size:11px; color:rgba(224,244,255,0.4); letter-spacing:3px; margin-top:2px; }
+    .stat-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:#25FF88; box-shadow:0 0 6px #25FF88; animation:pulse 2s ease-in-out infinite; margin-right:6px; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .header-stats { display:flex; gap:24px; font-size:12px; color:rgba(224,244,255,0.5); letter-spacing:1px; }
+
+    main {
+      position:relative; z-index:10;
+      display:flex; align-items:center; justify-content:center;
+      min-height:calc(100vh - 85px); padding:40px 20px;
+    }
+    .container { width:100%; max-width:520px; }
+    .section-title { font-family:'Orbitron',sans-serif; font-size:11px; letter-spacing:4px; color:var(--cyan); opacity:0.7; margin-bottom:10px; }
+    .main-title {
+      font-family:'Orbitron',sans-serif; font-size:28px; font-weight:900; line-height:1.2; margin-bottom:8px;
+      background:linear-gradient(135deg,#fff 0%,var(--cyan) 100%);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+    }
+    .main-desc { color:rgba(224,244,255,0.5); font-size:15px; margin-bottom:40px; line-height:1.6; }
+
+    .panel {
+      background:var(--dark2); border:1px solid var(--border);
+      border-radius:16px; padding:32px; position:relative; overflow:hidden;
+    }
+    .panel::before {
+      content:''; position:absolute; top:0; left:0; right:0; height:2px;
+      background:linear-gradient(90deg,transparent,var(--cyan),transparent);
+    }
+
+    .steps { display:flex; gap:8px; margin-bottom:28px; }
+    .step { flex:1; height:3px; background:rgba(0,212,255,0.15); border-radius:2px; transition:background 0.4s; }
+    .step.active { background:var(--cyan); box-shadow:0 0 8px var(--cyan); }
+    .step.done { background:#25FF88; }
+
+    .form-group { margin-bottom:20px; }
+    label { display:block; font-size:12px; letter-spacing:2px; color:var(--cyan); margin-bottom:10px; opacity:0.8; }
+    .input-wrap { position:relative; display:flex; align-items:center; }
+    .input-icon { position:absolute; left:14px; font-size:18px; opacity:0.5; }
+    input {
+      width:100%; background:var(--dark3); border:1px solid var(--border);
+      border-radius:10px; padding:14px 16px 14px 44px;
+      color:#E0F4FF; font-family:'Rajdhani',sans-serif;
+      font-size:16px; font-weight:600; letter-spacing:1px;
+      outline:none; transition:border-color 0.3s, box-shadow 0.3s;
+    }
+    input:focus { border-color:var(--cyan); box-shadow:var(--glow); }
+    input::placeholder { color:rgba(224,244,255,0.2); font-weight:400; }
+    .input-hint { margin-top:8px; font-size:12px; color:rgba(224,244,255,0.3); letter-spacing:1px; }
+
+    .btn {
+      width:100%; padding:15px;
+      background:linear-gradient(135deg,#0066CC,#00AAFF);
+      border:none; border-radius:10px; color:#fff;
+      font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:3px;
+      cursor:pointer; transition:all 0.3s;
+    }
+    .btn:hover { transform:translateY(-2px); box-shadow:0 8px 25px rgba(0,170,255,0.4); }
+    .btn:disabled { opacity:0.5; cursor:not-allowed; transform:none; }
+
+    .status-box {
+      display:none; margin-top:20px; padding:16px;
+      background:var(--dark3); border:1px solid var(--border); border-radius:10px;
+    }
+    .status-row { display:flex; align-items:center; gap:10px; font-size:14px; color:rgba(224,244,255,0.6); }
+    .spinner {
+      width:18px; height:18px;
+      border:2px solid rgba(0,212,255,0.2); border-top-color:var(--cyan);
+      border-radius:50%; animation:spin 1s linear infinite; flex-shrink:0;
+    }
+    @keyframes spin { to{transform:rotate(360deg)} }
+
+    /* Pairing Code */
+    .code-display { display:none; text-align:center; margin-top:24px; }
+    .code-label { font-size:12px; letter-spacing:3px; color:rgba(224,244,255,0.4); margin-bottom:16px; }
+    .code-value {
+      font-family:'Orbitron',sans-serif; font-size:36px; font-weight:900;
+      color:var(--cyan); letter-spacing:8px;
+      text-shadow:0 0 20px rgba(0,212,255,0.6);
+      padding:20px; background:var(--dark3);
+      border:2px solid var(--cyan); border-radius:12px; margin-bottom:16px;
+      animation:glow-pulse 2s ease-in-out infinite;
+    }
+    @keyframes glow-pulse {
+      0%,100%{box-shadow:0 0 15px rgba(0,212,255,0.2)}
+      50%{box-shadow:0 0 35px rgba(0,212,255,0.5)}
+    }
+    .code-instructions {
+      font-size:14px; color:rgba(224,244,255,0.5); line-height:2;
+      padding:14px; background:rgba(0,212,255,0.04);
+      border-radius:8px; border-left:2px solid var(--cyan);
+    }
+
+    /* Succès */
+    .success-box { display:none; text-align:center; }
+    .success-icon { font-size:56px; margin-bottom:16px; animation:bounce 0.5s ease; }
+    @keyframes bounce { 0%{transform:scale(0)} 70%{transform:scale(1.2)} 100%{transform:scale(1)} }
+    .success-title { font-family:'Orbitron',sans-serif; font-size:18px; color:#25FF88; margin-bottom:8px; }
+    .success-desc { color:rgba(224,244,255,0.5); font-size:14px; margin-bottom:20px; }
+    .session-id-box {
+      background:var(--dark3); border:1px solid #25FF88; border-radius:10px;
+      padding:16px; font-size:15px; font-weight:600; color:#25FF88;
+      letter-spacing:1px; word-break:break-all; margin-bottom:12px;
+    }
+    .session-hint { font-size:12px; color:rgba(224,244,255,0.3); letter-spacing:1px; }
+    .btn-new { margin-top:20px; background:rgba(0,212,255,0.1); border:1px solid var(--border); color:var(--cyan); }
+
+    .error-box {
+      display:none; padding:14px;
+      background:rgba(255,50,50,0.08); border:1px solid rgba(255,50,50,0.3);
+      border-radius:10px; color:#FF6B6B; font-size:14px; margin-top:16px; text-align:center;
+    }
+    .footer-text { text-align:center; margin-top:24px; font-size:12px; color:rgba(224,244,255,0.2); letter-spacing:2px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-area">
+      <div class="logo-icon">🛡️</div>
+      <div>
+        <div class="logo-text">SPECTRAL HUNTER</div>
+        <div class="logo-sub">PAIR SITE — MD V1</div>
+      </div>
+    </div>
+    <div class="header-stats">
+      <div><span class="stat-dot"></span>SYSTÈME ACTIF</div>
+      <div id="session-count">0 SESSION(S)</div>
+    </div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="section-title">// INITIALISATION</div>
+      <div class="main-title">Connexion<br>WhatsApp</div>
+      <div class="main-desc">Entrez votre numéro pour recevoir un code de connexion et générer votre Session ID.</div>
+
+      <div class="panel">
+        <div class="steps">
+          <div class="step active" id="step-1"></div>
+          <div class="step" id="step-2"></div>
+          <div class="step" id="step-3"></div>
+        </div>
+
+        <!-- Formulaire -->
+        <div id="form-section">
+          <div class="form-group">
+            <label>Numéro WhatsApp du bot</label>
+            <div class="input-wrap">
+              <span class="input-icon">📱</span>
+              <input type="tel" id="phone-input" placeholder="Ex: 22507000000000" autocomplete="off">
+            </div>
+            <div class="input-hint">⟶ Indicatif pays inclus, sans + ni espaces</div>
+          </div>
+          <button class="btn" id="connect-btn" onclick="startConnect()">GÉNÉRER LE CODE</button>
+          <div class="error-box" id="error-box"></div>
+        </div>
+
+        <!-- Chargement -->
+        <div class="status-box" id="status-box">
+          <div class="status-row">
+            <div class="spinner"></div>
+            <span id="status-text">Génération du code en cours...</span>
+          </div>
+        </div>
+
+        <!-- Pairing Code -->
+        <div class="code-display" id="code-display">
+          <div class="code-label">// CODE DE CONNEXION</div>
+          <div class="code-value" id="code-value">----</div>
+          <div class="code-instructions">
+            📱 WhatsApp → Paramètres (3 points)<br>
+            → Appareils connectés<br>
+            → Connecter un appareil<br>
+            → Connecter avec un numéro de téléphone<br>
+            → Entrez le code ci-dessus
+          </div>
+          <div class="status-box" style="display:block; margin-top:16px;">
+            <div class="status-row">
+              <div class="spinner"></div>
+              <span>En attente de votre confirmation WhatsApp...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Succès -->
+        <div class="success-box" id="success-box">
+          <div class="success-icon">✅</div>
+          <div class="success-title">CONNEXION ÉTABLIE</div>
+          <div class="success-desc">Votre Session ID a été envoyée sur WhatsApp.<br>Copiez-la et ajoutez-la sur Render.</div>
+          <div class="session-id-box" id="session-id-display">—</div>
+          <div class="session-hint">⟶ Render → Settings → Environment Variables → SESSION_ID</div>
+          <button class="btn btn-new" onclick="resetForm()">NOUVELLE CONNEXION</button>
+        </div>
+
+      </div>
+      <div class="footer-text">SPECTRAL HUNTER MD V1 — PAIR SITE // SYSTÈME SÉCURISÉ</div>
+    </div>
+  </main>
+
+  <script>
+    let eventSource = null;
+
+    async function loadStats() {
+      try {
+        const res = await fetch('/api/stats');
+        const data = await res.json();
+        document.getElementById('session-count').textContent = data.activeSessions + ' SESSION(S)';
+      } catch(_) {}
+    }
+    setInterval(loadStats, 5000);
+    loadStats();
+
+    async function startConnect() {
+      const phone = document.getElementById('phone-input').value.trim().replace(/[^0-9]/g, '');
+      if (!phone || phone.length < 8) { showError('Numéro invalide.'); return; }
+
+      document.getElementById('connect-btn').disabled = true;
+      document.getElementById('error-box').style.display = 'none';
+      document.getElementById('status-box').style.display = 'block';
+      document.getElementById('step-1').classList.add('done');
+      document.getElementById('step-2').classList.add('active');
+
+      try {
+        const res = await fetch('/api/connect', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ phone }),
+        });
+        const data = await res.json();
+        if (!data.token) throw new Error('Token non reçu');
+        listenSSE(data.token);
+      } catch(e) {
+        showError('Erreur : ' + e.message);
+        resetForm();
+      }
+    }
+
+    function listenSSE(token) {
+      eventSource = new EventSource('/api/status/' + token);
+
+      eventSource.onmessage = (e) => {
+        const data = JSON.parse(e.data);
+
+        if (data.type === 'code') {
+          document.getElementById('status-box').style.display = 'none';
+          document.getElementById('code-display').style.display = 'block';
+          document.getElementById('code-value').textContent = data.code;
+          document.getElementById('step-2').classList.add('done');
+          document.getElementById('step-3').classList.add('active');
+        }
+
+        if (data.type === 'connected') {
+          eventSource.close();
+          document.getElementById('code-display').style.display = 'none';
+          document.getElementById('success-box').style.display = 'block';
+          document.getElementById('session-id-display').textContent = data.sessionId;
+          document.getElementById('step-3').classList.add('done');
+        }
+
+        if (data.type === 'error') {
+          eventSource.close();
+          showError(data.message);
+          resetForm();
+        }
+      };
+
+      eventSource.onerror = () => {
+        if (eventSource.readyState === EventSource.CLOSED) {
+          showError('Connexion perdue. Réessayez.');
+          resetForm();
+        }
+      };
+    }
+
+    function showError(msg) {
+      const box = document.getElementById('error-box');
+      box.textContent = '⚠️ ' + msg;
+      box.style.display = 'block';
+    }
+
+    function resetForm() {
+      if (eventSource) { eventSource.close(); eventSource = null; }
+      document.getElementById('form-section').style.display = 'block';
+      document.getElementById('status-box').style.display = 'none';
+      document.getElementById('code-display').style.display = 'none';
+      document.getElementById('success-box').style.display = 'none';
+      document.getElementById('connect-btn').disabled = false;
+      document.getElementById('phone-input').value = '';
+      ['step-1','step-2','step-3'].forEach(id => {
+        document.getElementById(id).classList.remove('active','done');
+      });
+      document.getElementById('step-1').classList.add('active');
+    }
+  </script>
+</body>
+</html>
+
