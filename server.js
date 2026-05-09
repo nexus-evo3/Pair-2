@@ -4,7 +4,7 @@ const {
   useMultiFileAuthState,
   DisconnectReason,
   fetchLatestBaileysVersion,
-} = require("@whiskeysockets/baileys");
+} = require("baileys");
 const pino = require("pino");
 const fs = require("fs");
 const path = require("path");
@@ -207,7 +207,7 @@ app.get("/api/status/:token", (req, res) => {
     if (activeSessions.has(token)) {
       activeSessions.get(token).sseRes = null;
     }
-  });er
+  });
 });
 
 app.get("/api/stats", (req, res) => {
@@ -222,4 +222,3 @@ fs.mkdirSync(path.join(__dirname, "sessions"), { recursive: true });
 app.listen(PORT, () => {
   console.log(`🛡️ Spectral Hunter Pair Site en ligne sur le port ${PORT}`);
 });
-serv
